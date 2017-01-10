@@ -219,7 +219,7 @@ echo "${XDEBUG}" >> /usr/local/etc/php/7.0/php.ini
 echo
 echo "Ustawiam strefę czasową dla php..."
 #setup php.ini files
-sed -i -e "s/;date.timezone =/date.timezone = Europe\/Warsaw" /usr/local/etc/php/7.0/php.ini
+sed -i -e "s/;date.timezone =/date.timezone = Europe\/Warsaw/" /usr/local/etc/php/7.0/php.ini
 
 
 echo
