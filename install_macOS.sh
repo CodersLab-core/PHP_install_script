@@ -53,9 +53,6 @@ echo "Instaluję MySQL 5.7..."
 brew install mysql
 ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-echo
-echo "Zmieniam hasło root dla MySQL na coderslab..."
-mysqladmin -u root password coderslab 
 
 echo
 echo "Instaluję phpmyadmina..."
@@ -253,8 +250,12 @@ sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 echo
 echo "Restart php-fpm..."
 # restart php-fpm
-sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
-sudo launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+
+echo
+echo "Zmieniam hasło root dla MySQL na coderslab..."
+mysqladmin -u root password coderslab
 
 echo
 echo "Tworzę skróty do sterowania nginx, php-fpm oraz mysql..."
@@ -262,6 +263,7 @@ echo "Tworzę skróty do sterowania nginx, php-fpm oraz mysql..."
 # add bash aliases for start/stop nginx/php-fpm/mysql
 
 BASH_ALIASES=$(cat <<EOF
+#only for macOS
 alias nginx.start='sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist'
 alias nginx.stop='sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist'
 alias nginx.restart='nginx.stop && nginx.start'
@@ -273,10 +275,7 @@ alias mysql.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mysql
 alias mysql.restart='mysql.stop && mysql.start'
 EOF
 )
-
-curl -LSs https://raw.githubusercontent.com/CodersLab/PHP_install_script/master/bash_profile?token=ANghixyuWnNJ99Wm1oDZSbOktAGijhlPks5YfhBUwA%3D%3D -O ~/.bash_profile
-
-echo ${BASH_ALIASES} >> ~/.bash_profile
+echo "${BASH_ALIASES}" >> ~/.bash_profile
 
 echo "#############################"
 echo "####INSTALACJA ZAKOŃCZONA####"
