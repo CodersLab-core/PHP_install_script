@@ -199,8 +199,8 @@ BASH_ALIASES=$(cat <<EOF
 alias nginx.start='sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist'
 alias nginx.stop='sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist'
 alias nginx.restart='nginx.stop && nginx.start'
-alias php-fpm.start="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php56.plist"
-alias php-fpm.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php56.plist"
+alias php-fpm.start="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist"
+alias php-fpm.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist"
 alias php-fpm.restart='php-fpm.stop && php-fpm.start'
 alias mysql.start="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
 alias mysql.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
@@ -209,3 +209,5 @@ EOF
 )
 
 echo ${BASH_ALIASES} >> ~/.bash_profile && . ~/.bash_profile
+
+echo "INSTALACJA UDANA, SPRAWDŹ JEJ POPRAWNOŚĆ WYKONUJĄC KROKI PRZEDSTAWIONE NA PREZENTACJI"
