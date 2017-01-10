@@ -22,16 +22,22 @@ echo "Instaluję homebrew..."
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 echo
-echo "Instaluję curl, vim, git, mc oraz wget..."
-#install all used tools
-brew install curl vim git mc wget
-
-echo
 echo "Dodaje niezbędne repozytoria homebrew..."
 # add external taps
 brew tap homebrew/dupes
 brew tap homebrew/versions
 brew tap homebrew/php
+
+echo
+echo "Instaluję curl, vim, git, mc oraz wget..."
+#install all used tools
+brew tap caskroom/cask
+brew install caskroom/cask/brew-cask
+brew install homebrew/completions/brew-cask-completion
+
+brew install curl vim git mc wget
+
+brew cask install java
 
 echo
 echo "Usuwam apache - jeśli istnieje..."
@@ -276,6 +282,8 @@ alias mysql.restart='mysql.stop && mysql.start'
 EOF
 )
 echo "${BASH_ALIASES}" >> ~/.bash_profile
+
+brew cask install netbeans-php
 
 echo "#############################"
 echo "####INSTALACJA ZAKOŃCZONA####"
