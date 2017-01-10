@@ -106,8 +106,8 @@ echo "Dodaję plik test_error.php..."
 touch ~/Workspace/test_error.php
 PHPERROR=$(cat <<EOF
 <?php
-$hello = 'Hi';
-echo $hello . ' John';
+\$hello = 'Hi';
+echo \$hello . ' John';
 echo Mark;
 EOF
 )
@@ -130,9 +130,9 @@ http {
     include             mime.types;
     default_type        application/octet-stream;
 
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
+    log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+                      '\$status \$body_bytes_sent "\$http_referer" '
+                      '"\$http_user_agent" "\$http_x_forwarded_for"';
 
     access_log  /usr/local/etc/nginx/logs/access.log  main;
 
@@ -186,6 +186,7 @@ server {
     }
 
     location / {
+        autoindex on;
         include   /usr/local/etc/nginx/conf.d/php-fpm;
     }
 }
@@ -217,13 +218,6 @@ xdebug.remote_connect_back=0
 EOF
 )
 echo "${XDEBUG}" >> /usr/local/etc/php/7.0/php.ini
-
-
-echo
-echo "Restart php-fpm..."
-# restart php-fpm
-sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
-sudo launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
 
 echo
 echo "Ustawiam strefę czasową dla php..."
@@ -257,6 +251,12 @@ sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
 echo
+echo "Restart php-fpm..."
+# restart php-fpm
+sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+sudo launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+
+echo
 echo "Tworzę skróty do sterowania nginx, php-fpm oraz mysql..."
 
 # add bash aliases for start/stop nginx/php-fpm/mysql
@@ -273,6 +273,8 @@ alias mysql.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mysql
 alias mysql.restart='mysql.stop && mysql.start'
 EOF
 )
+
+curl -LSs https://raw.githubusercontent.com/CodersLab/PHP_install_script/master/bash_profile?token=ANghixyuWnNJ99Wm1oDZSbOktAGijhlPks5YfhBUwA%3D%3D -O ~/.bash_profile
 
 echo ${BASH_ALIASES} >> ~/.bash_profile
 
