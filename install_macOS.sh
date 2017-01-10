@@ -111,10 +111,10 @@ echo "${NGINXCONF}" >> /usr/local/etc/nginx/nginx.conf
 
 PHPFPM=$(cat <<EOF
 location ~ \.php$ {
-    try_files      $uri = 404;
+    try_files      \$uri = 404;
     fastcgi_pass   127.0.0.1:9000;
     fastcgi_index  index.php;
-    fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param  SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
     include        fastcgi_params;
 }
 EOF
@@ -147,7 +147,7 @@ server {
 EOF
 )
 
-echo "${NGINXCONF}" >> /usr/local/etc/nginx/sites-available/default
+echo "${NGINXDEFAULT}" >> /usr/local/etc/nginx/sites-available/default
 
 # enable default and phpmyadmin
 ln -sfv /usr/local/etc/nginx/sites-available/default /usr/local/etc/nginx/sites-enabled/default
