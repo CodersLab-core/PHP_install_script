@@ -13,33 +13,31 @@ read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować."
 echo
 echo "Instaluję narzędzia konsolowe..."
 # install Command Line Tools for Xcode
-xcode-select --install 2>/dev/null
+xcode-select --install
 
 
 echo
 echo "Instaluję homebrew..."
 # install brew package manager
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 2>/dev/null
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 echo
 echo "Instaluję curl, vim, git, mc oraz wget..."
 #install all used tools
-brew install curl vim git mc wget 2>/dev/null
+brew install curl vim git mc wget
 
 echo
 echo "Dodaje niezbędne repozytoria homebrew..."
 # add external taps
-brew tap homebrew/dupes 2>/dev/null
-brew tap homebrew/versions 2>/dev/null
-brew tap homebrew/php 2>/dev/null
-#brew tap homebrew/apache
+brew tap homebrew/dupes
+brew tap homebrew/versions
+brew tap homebrew/php
 
 echo
 echo "Usuwam apache - jeśli istnieje..."
 # install clean apache from brew tap
-sudo apachectl stop 2>/dev/null
-sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
-#brew install httpd24 --with-privileged-ports --with-http2
+sudo apachectl stop
+sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 
 echo
 echo "Instaluję php 7.0..."
@@ -52,60 +50,60 @@ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
 echo
 echo "Instaluję MySQL 5.7..."
 # install mysql 5.7
-brew install mysql2 >/dev/null
-ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents >/dev/null
-launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist >/dev/null
+brew install mysql
+ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 echo
 echo "Zmieniam hasło root dla MySQL na coderslab..."
-mysqladmin -u root password coderslab >/dev/null
+mysqladmin -u root password coderslab 
 
 echo
 echo "Instaluję phpmyadmina..."
 # install phpmyadmin in /usr/local/share/phpmyadmin
 
-brew install autoconf >/dev/null
-brew install phpmyadmin >/dev/null
+brew install autoconf
+brew install phpmyadmin
 
 echo
 echo "Instaluję nginx..."
 #install nginx
 
-brew install nginx >/dev/null
-sudo cp -v /usr/local/opt/nginx/*.plist /Library/LaunchDaemons/ >/dev/null
-sudo chown root:wheel /Library/LaunchDaemons/homebrew.mxcl.nginx.plist >/dev/null
+brew install nginx
+sudo cp -v /usr/local/opt/nginx/*.plist /Library/LaunchDaemons/
+sudo chown root:wheel /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
-sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist >/dev/null
+sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
-mkdir -p /usr/local/etc/nginx/logs >/dev/null
-mkdir -p /usr/local/etc/nginx/sites-available >/dev/null
-mkdir -p /usr/local/etc/nginx/sites-enabled >/dev/null
-mkdir -p /usr/local/etc/nginx/conf.d >/dev/null
-mkdir -p /usr/local/etc/nginx/ssl >/dev/null
-sudo mkdir -p /var/www >/dev/null
-sudo chown :staff /var/www >/dev/null
-sudo chmod 775 /var/www >/dev/null
+mkdir -p /usr/local/etc/nginx/logs
+mkdir -p /usr/local/etc/nginx/sites-available
+mkdir -p /usr/local/etc/nginx/sites-enabled
+mkdir -p /usr/local/etc/nginx/conf.d
+mkdir -p /usr/local/etc/nginx/ssl
+#sudo mkdir -p /var/www
+#sudo chown :staff /var/www
+#sudo chmod 775 /var/www
 
-rm /usr/local/etc/nginx/nginx.conf >/dev/null
+rm /usr/local/etc/nginx/nginx.conf
 
 echo
 echo "Tworzę katalog Workspace"
 mkdir ~/Workspace
 chmod 777 ~/Workspace
-ln -s ~/Workspace /var/www
+sudo ln -s ~/Workspace /var/www
 
 echo
 echo "Dodaję plik phpinfo.php..."
-touch /var/www/phpinfo.php >/dev/null
+touch ~/Workspace/phpinfo.php
 PHPINFO=$(cat <<EOF
 <?php
 phpinfo();
 EOF
 )
 
-echo "${PHPINFO}" >> /var/www/phpinfo.php >/dev/null
+echo "${PHPINFO}" >> /var/www/phpinfo.php
 echo
 echo "Dodaję plik test_error.php..."
-touch /var/www/test_error.php >/dev/null
+touch ~/Workspace/test_error.php
 PHPERROR=$(cat <<EOF
 <?php
 $hello = 'Hi';
@@ -114,7 +112,7 @@ echo Mark;
 EOF
 )
 
-echo "${PHPERROR}" >> /var/www/test_error.php >/dev/null
+echo "${PHPERROR}" >> /var/www/test_error.php
 
 echo
 echo "Dodaję konfigurację nginx..."
@@ -149,8 +147,8 @@ http {
 EOF
 )
 
-touch /usr/local/etc/nginx/nginx.conf >/dev/null
-echo "${NGINXCONF}" >> /usr/local/etc/nginx/nginx.conf >/dev/null
+touch /usr/local/etc/nginx/nginx.conf
+echo "${NGINXCONF}" >> /usr/local/etc/nginx/nginx.conf
 
 echo
 echo "Dodaję konfigurację php-fpm..."
@@ -165,8 +163,8 @@ location ~ \.php$ {
 EOF
 )
 
-touch /usr/local/etc/nginx/conf.d/php-fpm >/dev/null
-echo "${PHPFPM}" >> /usr/local/etc/nginx/conf.d/php-fpm >/dev/null
+touch /usr/local/etc/nginx/conf.d/php-fpm
+echo "${PHPFPM}" >> /usr/local/etc/nginx/conf.d/php-fpm
 
 echo
 echo "Tworzę domyślny host..."
@@ -194,20 +192,20 @@ server {
 EOF
 )
 
-echo "${NGINXDEFAULT}" >> /usr/local/etc/nginx/sites-available/default >/dev/null
+echo "${NGINXDEFAULT}" >> /usr/local/etc/nginx/sites-available/default
 
 echo
 echo "Aktywuję domyślny host..."
 # enable default
-ln -sfv /usr/local/etc/nginx/sites-available/default /usr/local/etc/nginx/sites-enabled/default >/dev/null
+ln -sfv /usr/local/etc/nginx/sites-available/default /usr/local/etc/nginx/sites-enabled/default
 
-sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist >/dev/null
+sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
 echo
 echo "Instaluję xdebug..."
 #install xdebug
 
-brew install php70-xdebug >/dev/null
+brew install php70-xdebug
 XDEBUG=$(cat <<EOF
 [xdebug]
 xdebug.remote_enable=1
@@ -218,33 +216,33 @@ xdebug.remote_autostart=0
 xdebug.remote_connect_back=0
 EOF
 )
-echo "${XDEBUG}" >> /usr/local/etc/php/7.0/php.ini >/dev/null
+echo "${XDEBUG}" >> /usr/local/etc/php/7.0/php.ini
 
 
 echo
 echo "Restart php-fpm..."
 # restart php-fpm
-sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist >/dev/null
-sudo launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist >/dev/null
+sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+sudo launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
 
 echo
 echo "Ustawiam strefę czasową dla php..."
 #setup php.ini files
-sed -i -e "s/;date.timezone =/date.timezone = Europe\/Warsaw" /usr/local/etc/php/7.0/php.ini >/dev/null
+sed -i -e "s/;date.timezone =/date.timezone = Europe\/Warsaw" /usr/local/etc/php/7.0/php.ini
 
 
 echo
 echo "Instaluję Composera..."
 # install Composer
-cd /tmp >/dev/null
-curl -s https://getcomposer.org/installer | php >/dev/null
-mv composer.phar /usr/local/bin/composer >/dev/null
+cd /tmp
+curl -s https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
 
 echo
 echo "Instaluję Symfony..."
 #install symfony2
-sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony >/dev/null
-sudo chmod a+x /usr/local/bin/symfony >/dev/null
+sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony
+sudo chmod a+x /usr/local/bin/symfony
 
 echo
 echo "Aktualizuję paczki homebrew..."
@@ -255,8 +253,8 @@ brew upgrade
 echo
 echo "Restartuję nginx..."
 #restart nginx
-sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist >/dev/null
-sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist >/dev/null
+sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
 echo
 echo "Tworzę skróty do sterowania nginx, php-fpm oraz mysql..."
@@ -276,7 +274,7 @@ alias mysql.restart='mysql.stop && mysql.start'
 EOF
 )
 
-echo ${BASH_ALIASES} >> ~/.bash_profile >/dev/null
+echo ${BASH_ALIASES} >> ~/.bash_profile
 
 echo "#############################"
 echo "####INSTALACJA ZAKOŃCZONA####"
