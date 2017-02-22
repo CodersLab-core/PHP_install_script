@@ -105,10 +105,10 @@ sudo apt-get upgrade -y
 sudo systemctl restart apache2
 
 #install NetBeans
-wget http://download.netbeans.org/netbeans/8.1/final/bundles/netbeans-8.1-php-linux-x64.sh
-chmod 777 ./netbeans-8.1-php-linux-x64.sh
-./netbeans-8.1-php-linux-x64.sh --silent
-rm ./netbeans-8.1-php-linux-x64.sh
+wget http://download.netbeans.org/netbeans/8.2/final/bundles/netbeans-8.2-php-linux-x64.sh
+chmod 777 ./netbeans-8.2-php-linux-x64.sh
+./netbeans-8.2-php-linux-x64.sh --silent
+rm ./netbeans-8.2-php-linux-x64.sh
 
 #unpausing updating grub
 sudo apt-mark unhold grub*
