@@ -26,7 +26,7 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 sudo apt-get install -y mysql-server
  
 #install php7 and libs
-sudo apt-get install -y php7.0 php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-cgi php7.0-cli
+sudo apt-get install -y php7.0 php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-cgi php7.0-cli php7.0-soap
 sudo apt-get install -y libapache2-mod-php7.0
 
 #install xdebug
