@@ -41,14 +41,14 @@ xdebug.remote_autostart=0
 xdebug.remote_connect_back=0
 EOF
 )
-echo "${XDEBUG}" >> /etc/php/7.0/apache2/php.ini 
-echo "${XDEBUG}" >> /etc/php/7.0/cli/php.ini 
+sudo echo "${XDEBUG}" >> /etc/php/7.0/apache2/php.ini
+sudo echo "${XDEBUG}" >> /etc/php/7.0/cli/php.ini
 
 #setup php.ini files
-sed -i '/error_reporting = /c\error_reporting = E_ALL' /etc/php/7.0/apache2/php.ini 
-sed -i '/display_errors = /c\display_errors = On' /etc/php/7.0/apache2/php.ini 
-sed -i '/date.timezone = /c\date.timezone = Europe/Warsaw' /etc/php/7.0/apache2/php.ini 
-sed -i '/date.timezone = /c\date.timezone = Europe/Warsaw' /etc/php/7.0/cli/php.ini 
+sudo sed -i '/error_reporting = /c\error_reporting = E_ALL' /etc/php/7.0/apache2/php.ini
+sudo sed -i '/display_errors = /c\display_errors = On' /etc/php/7.0/apache2/php.ini
+sudo sed -i '/date.timezone = /c\date.timezone = Europe/Warsaw' /etc/php/7.0/apache2/php.ini
+sudo sed -i '/date.timezone = /c\date.timezone = Europe/Warsaw' /etc/php/7.0/cli/php.ini
 
 #install papmyadmin
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
@@ -83,12 +83,12 @@ VHOST=$(cat <<EOF
 </VirtualHost>
 EOF
 )
-echo "${VHOST}" > /etc/apache2/sites-available/000-default.conf
+sudo echo "${VHOST}" > /etc/apache2/sites-available/000-default.conf
 
 # install postfix
 sudo debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
-apt-get install -y postfix
+sudo apt-get install -y postfix
 
 #creating and linkng Workspace
 sudo mkdir ~/Workspace

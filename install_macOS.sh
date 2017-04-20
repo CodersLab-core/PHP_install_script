@@ -220,7 +220,7 @@ xdebug.remote_autostart=0
 xdebug.remote_connect_back=0
 EOF
 )
-echo "${XDEBUG}" >> /usr/local/etc/php/7.0/php.ini
+sudo echo "${XDEBUG}" >> /usr/local/etc/php/7.0/php.ini
 
 echo
 echo "Ustawiam strefę czasową dla php..."
