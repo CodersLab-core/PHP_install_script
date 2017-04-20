@@ -41,14 +41,14 @@ xdebug.remote_autostart=0
 xdebug.remote_connect_back=0
 EOF
 )
-sudo echo "${XDEBUG}" >> /etc/php/7.0/apache2/php.ini
-sudo echo "${XDEBUG}" >> /etc/php/7.0/cli/php.ini
+echo "${XDEBUG}" | sudo tee -a /etc/php/7.0/apache2/php.ini
+echo "${XDEBUG}" | sudo tee -a /etc/php/7.0/cli/php.ini
 
 #setup php.ini files
 sudo sed -i '/error_reporting = /c\error_reporting = E_ALL' /etc/php/7.0/apache2/php.ini
 sudo sed -i '/display_errors = /c\display_errors = On' /etc/php/7.0/apache2/php.ini
-sudo sed -i '/date.timezone = /c\date.timezone = Europe/Warsaw' /etc/php/7.0/apache2/php.ini
-sudo sed -i '/date.timezone = /c\date.timezone = Europe/Warsaw' /etc/php/7.0/cli/php.ini
+sudo sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Warsaw\"/" /etc/php/7.0/apache2/php.ini
+sudo sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Warsaw\"/" /etc/php/7.0/cli/php.ini
 
 #install papmyadmin
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
@@ -65,8 +65,8 @@ sudo a2enconf phpmyadmin.conf
 sudo service apache2 reload
 
 # install Composer
-curl -s https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+sudo curl -s https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
  
 #install symfony2
 sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony
@@ -83,7 +83,7 @@ VHOST=$(cat <<EOF
 </VirtualHost>
 EOF
 )
-sudo echo "${VHOST}" > /etc/apache2/sites-available/000-default.conf
+echo "${VHOST}" | sudo tee /etc/apache2/sites-available/000-default.conf
 
 # install postfix
 sudo debconf-set-selections <<< "postfix postfix/mailname string $HOSTNAME"
