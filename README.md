@@ -1,3 +1,5 @@
+<img alt="Logo" src="http://coderslab.pl/svg/logo-coderslab.svg" width="400">
+
 # PHP_install_script
 
 ## Plik instalacyjny na kurs Back End (PHP)
