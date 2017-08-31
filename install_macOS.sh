@@ -156,11 +156,15 @@ echo "${NGINXCONF}" >> /usr/local/etc/nginx/nginx.conf
 echo
 echo "Dodaję konfigurację php-fpm..."
 PHPFPM=$(cat <<EOF
-location ~ \.php$ {
-    try_files      \$uri = 404;
+location ~ [^/]\.php(/|\$) {
+    fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
+    if (!-f \$document_root\$fastcgi_script_name) {
+        return 404;
+    }
     fastcgi_pass   127.0.0.1:9000;
     fastcgi_index  index.php;
     fastcgi_param  SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+    fastcgi_param  PATH_INFO \$fastcgi_path_info;
     include        fastcgi_params;
 }
 EOF
