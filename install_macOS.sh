@@ -287,8 +287,6 @@ EOF
 )
 echo "${BASH_ALIASES}" >> ~/.bash_profile
 
-brew cask install netbeans-php
-
 echo "#############################"
 echo "####INSTALACJA ZAKOŃCZONA####"
 echo "#############################"
