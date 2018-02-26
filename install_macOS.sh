@@ -287,6 +287,11 @@ EOF
 )
 echo "${BASH_ALIASES}" >> ~/.bash_profile
 
+echo
+echo "Dodaję uzytkownika do grupy www-data..."
+
+sudo dseditgroup -o edit -a $USER -t user www-data
+
 echo "#############################"
 echo "####INSTALACJA ZAKOŃCZONA####"
 echo "#############################"
