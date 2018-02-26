@@ -104,5 +104,8 @@ sudo apt-get upgrade -y
 #restart apache
 sudo systemctl restart apache2
 
+#add current user to www-data group
+sudo usermod -a -G www-data  $USER
+
 #unpausing updating grub
 sudo apt-mark unhold grub*
