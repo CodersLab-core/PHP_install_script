@@ -9,13 +9,19 @@ sudo apt-mark hold grub*
 
 #add ppa for phpmyadmin
 sudo add-apt-repository -y ppa:nijel/phpmyadmin
- 
+
+#add ppa for tlp
+sudo add-apt-repository -y ppa:linrunner/tlp
+
 # update / upgrade
 sudo apt-get update
 sudo apt-get -y upgrade
  
 #install all used tools
 sudo apt-get install -y curl vim git
+
+#install tlp
+sudo apt-get install -y tlp tlp-rdw tp-smapi-dkms acpi-call-dkms
  
 #install apache2
 sudo apt-get install -y apache2
