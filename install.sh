@@ -1,5 +1,28 @@
 #!/usr/bin/env bash
  
+echo
+echo "Witaj w Coders Lab!"
+echo
+echo "Ten skrypt zaktualizuje Twój system, zainstaluje kilka niezbędnych programów,"
+echo "których będziesz potrzebować podczas kursu oraz skonfiguruje bazę danych MySQL."
+echo "W tym czasie na ekranie pojawi się wiele komunikatów."
+echo "ABY INSTALACJA SIĘ POWIODŁA MUSISZ MIEĆ DOSTĘP DO INTERNETU W TRAKCIE TRWANIA "
+echo "INSTALACJI!"
+read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
+
+mkdir ~/.coderslab
+
+linuxsysversion=$(lsb_release -rs)
+
+echo "Twoje wersja systemu:"
+echo $linuxsysversion
+ 
+if [[ `lsb_release -rs` != "18.04" ]]
+then
+    echo "Twoje wersja systemu jest niezgodna z wymaganą 18.04"
+    exit 1
+fi 
+ 
 # Use single quotes instead of double quotes to make it work with special-character passwords
 PASSWORD='coderslab'
 HOSTNAME='student.edu'
@@ -32,8 +55,8 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 sudo apt-get install -y mysql-server
  
 #install php7 and libs
-sudo apt-get install -y php7.0 php7.0-mysql php7.0-curl php7.0-gd php7.0-json php7.0-cgi php7.0-cli php7.0-soap
-sudo apt-get install -y libapache2-mod-php7.0
+sudo apt-get install -y php php-mysql php-curl php-gd php-json php-cgi php-cli php-soap
+sudo apt-get install -y libapache2-mod-php
 
 #install xdebug
 sudo apt-get install -y php-xdebug
@@ -47,14 +70,14 @@ xdebug.remote_autostart=0
 xdebug.remote_connect_back=0
 EOF
 )
-echo "${XDEBUG}" | sudo tee -a /etc/php/7.0/apache2/php.ini
-echo "${XDEBUG}" | sudo tee -a /etc/php/7.0/cli/php.ini
+echo "${XDEBUG}" | sudo tee -a /etc/php/7.2/apache2/php.ini
+echo "${XDEBUG}" | sudo tee -a /etc/php/7.2/cli/php.ini
 
 #setup php.ini files
-sudo sed -i '/error_reporting = /c\error_reporting = E_ALL' /etc/php/7.0/apache2/php.ini
-sudo sed -i '/display_errors = /c\display_errors = On' /etc/php/7.0/apache2/php.ini
-sudo sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Warsaw\"/" /etc/php/7.0/apache2/php.ini
-sudo sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Warsaw\"/" /etc/php/7.0/cli/php.ini
+sudo sed -i '/error_reporting = /c\error_reporting = E_ALL' /etc/php/7.2/apache2/php.ini
+sudo sed -i '/display_errors = /c\display_errors = On' /etc/php/7.2/apache2/php.ini
+sudo sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Warsaw\"/" /etc/php/7.2/apache2/php.ini
+sudo sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Warsaw\"/" /etc/php/7.2/cli/php.ini
 
 #install papmyadmin
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
@@ -110,8 +133,40 @@ sudo apt-get upgrade -y
 #restart apache
 sudo systemctl restart apache2
 
+echo "Twój użytkownik to $USER"
+echo "Dodaję użytkownika do grupy www-data"
+
 #add current user to www-data group
 sudo usermod -a -G www-data $USER
+read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
+
+echo "Sprawdź czy na poniższej liście znajduje się grupa www-data, jeśli nie, poinformuj Mentora"
+id -Gn
+read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
+
+sudo snap install phpstorm --classic
+phpstormversion=$(cd /opt && ls -1 | grep phpstorm)
+
+echo "Zainstalowna wersja PhpStorm"
+echo $phpstormversion
+read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
+
+DESKTOP=$(cat <<EOF
+[Desktop Entry]
+Name=PhpStorm
+Comment=IDE używane podczas kursu w Coders Lab
+Exec=/opt/$phpstormversion/bin/phpstorm.sh
+Icon=/opt/$phpstormversion/bin/phpstorm.png
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;Application
+EOF
+)
+touch ~/.coderslab/phpstorm.desktop
+echo "${DESKTOP}" > ~/.coderslab/phpstorm.desktop
+sudo cp ~/.coderslab/phpstorm.desktop /usr/share/applications/phpstorm.desktop
+rm ~/.coderslab/phpstorm.desktop
 
 #unpausing updating grub
 sudo apt-mark unhold grub*
