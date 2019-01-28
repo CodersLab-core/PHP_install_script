@@ -140,33 +140,27 @@ echo "Dodaję użytkownika do grupy www-data"
 sudo usermod -a -G www-data $USER
 read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
 
-echo "Sprawdź czy na poniższej liście znajduje się grupa www-data, jeśli nie, poinformuj Mentora"
-id -Gn
-read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
-
 sudo snap install phpstorm --classic
-phpstormversion=$(cd /opt && ls -1 | grep phpstorm)
-
-echo "Zainstalowna wersja PhpStorm"
-echo $phpstormversion
-read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
 
 DESKTOP=$(cat <<EOF
 [Desktop Entry]
 Name=PhpStorm
 Comment=IDE używane podczas kursu w Coders Lab
-Exec=/opt/$phpstormversion/bin/phpstorm.sh
-Icon=/opt/$phpstormversion/bin/phpstorm.png
+Exec=/snap/bin/phpstorm
 Terminal=false
 Type=Application
 StartupNotify=true
 Categories=Utility;Application
 EOF
 )
-touch ~/.coderslab/phpstorm.desktop
-echo "${DESKTOP}" > ~/.coderslab/phpstorm.desktop
-sudo cp ~/.coderslab/phpstorm.desktop /usr/share/applications/phpstorm.desktop
-rm ~/.coderslab/phpstorm.desktop
+touch ~/.coderslab/PhpStorm.desktop
+echo "${DESKTOP}" > ~/.coderslab/PhpStorm.desktop
+sudo cp ~/.coderslab/phpstorm.desktop /usr/share/applications/PhpStorm.desktop
+rm ~/.coderslab/PhpStorm.desktop
 
 #unpausing updating grub
 sudo apt-mark unhold grub*
+
+echo "INSTALACJA ZAKOŃCZONA"
+echo "WYLOGUJ I PONOWNIE ZALOGUJ SIĘ NA SWOJE KONTO"
+
