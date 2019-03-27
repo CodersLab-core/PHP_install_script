@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
 
 echo
-echo "Witaj w CodersLab!"
+echo "Hello!"
 echo
-echo "Ten skrypt zaktualizuje Twój system, zainstaluje kilka niezbędnych programów,"
-echo "których będziesz potrzebować podczas kursu oraz skonfiguruje bazę danych MySQL."
-echo "W tym czasie na ekranie pojawi się wiele komunikatów."
-echo "ABY INSTALACJA SIĘ POWIODŁA MUSISZ MIEĆ DOSTĘP DO INTERNETU W TRAKCIE TRWANIA "
-echo "INSTALACJI!"
-read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować."
+echo "This script will update your system, and it will install all software needed during course."
+echo "During instalation process you will see lots of information on screen - do not worry about that."
+echo "For instalation process to succeed you have to have internet connection all the time. "
+read -n1 -r -p "Press any key to continue." 
 
 echo
-echo "Instaluję narzędzia konsolowe..."
+echo "Installing Xcode..."
 # install Command Line Tools for Xcode
 xcode-select --install
 
 
 echo
-echo "Instaluję homebrew..."
+echo "Installing homebrew..."
 # install brew package manager
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 echo
-echo "Dodaje niezbędne repozytoria homebrew..."
+echo "Adding homebrew repositories..."
 # add external taps
 #brew tap homebrew/dupes #deprecated
 #brew tap homebrew/versions #deprecated
@@ -30,7 +28,7 @@ echo "Dodaje niezbędne repozytoria homebrew..."
 brew tap homebrew/services
 
 echo
-echo "Instaluję curl, vim, git, mc oraz wget..."
+echo "Installing curl, vim, git, mc and wget..."
 #install all used tools
 brew tap caskroom/cask
 #brew install caskroom/cask/brew-cask #deprecated
@@ -42,13 +40,13 @@ brew cask install java
 #brew install phpize
 
 echo
-echo "Usuwam apache - jeśli istnieje..."
+echo "Removing apache - if installed previously..."
 # install clean apache from brew tap
 sudo apachectl stop
 sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist
 
 echo
-echo "Instaluję php 7.1..."
+echo "Installing php 7.1..."
 # install php 7.1
 brew install --without-mssql --without-httpd22 --without-httpd24 php71
 mkdir -p ~/Library/LaunchAgents
@@ -56,19 +54,19 @@ ln -sfv /usr/local/opt/php@7.1/homebrew.mxcl.php@7.1.plist ~/Library/LaunchAgent
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php@7.1.plist
 
 echo
-echo "Instaluję MySQL 5.7..."
+echo "Installing MySQL 5.7..."
 # install mysql 5.7
 brew install mysql
 ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 
 echo
-echo "Fix mysql socket"
+echo "Fixing mysql socket"
 sudo mkdir /var/mysql
 sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock
 
 echo
-echo "Instaluję nginx..."
+echo "Installing nginx..."
 #install nginx
 
 brew install nginx
@@ -76,7 +74,7 @@ sudo cp -v /usr/local/opt/nginx/*.plist /Library/LaunchDaemons/
 sudo chown root:wheel /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
 echo
-echo "Umożliwiam działanie nginx na porcie 80..."
+echo "Configuring nginx..."
 sudo chown root:wheel /usr/local/opt/nginx-full/bin/nginx
 sudo chmod u+s /usr/local/opt/nginx-full/bin/nginx
 
@@ -94,14 +92,14 @@ mkdir -p /usr/local/etc/nginx/ssl
 rm /usr/local/etc/nginx/nginx.conf
 
 echo
-echo "Tworzę katalog Workspace"
+echo "Creating Workspace"
 mkdir ~/Workspace
 chmod 777 ~/Workspace
 sudo ln -s ~/Workspace /var/www
 
 
 echo
-echo "Instaluję phpmyadmina..."
+echo "Installing phpmyadmina..."
 # install phpmyadmin in /usr/local/share/phpmyadmin
 
 cd /tmp
@@ -111,7 +109,7 @@ mv phpMyAdmin-4.8.1-all-languages ~/Workspace/phpmyadmin
 
 
 echo
-echo "Dodaję plik phpinfo.php..."
+echo "Adding phpinfo.php..."
 touch ~/Workspace/phpinfo.php
 PHPINFO=$(cat <<EOF
 <?php
@@ -121,7 +119,7 @@ EOF
 
 echo "${PHPINFO}" >> /var/www/phpinfo.php
 echo
-echo "Dodaję plik test_error.php..."
+echo "Adding test_error.php..."
 touch ~/Workspace/test_error.php
 PHPERROR=$(cat <<EOF
 <?php
@@ -134,7 +132,7 @@ EOF
 echo "${PHPERROR}" >> /var/www/test_error.php
 
 echo
-echo "Dodaję konfigurację nginx..."
+echo "Configuring nginx..."
 
 NGINXCONF=$(cat <<EOF
 worker_processes  1;
@@ -170,7 +168,7 @@ touch /usr/local/etc/nginx/nginx.conf
 echo "${NGINXCONF}" >> /usr/local/etc/nginx/nginx.conf
 
 echo
-echo "Dodaję konfigurację php-fpm..."
+echo "Configuring php-fpm..."
 PHPFPM=$(cat <<EOF
 location ~ [^/]\.php(/|\$) {
     fastcgi_split_path_info ^(.+?\.php)(/.*)\$;
@@ -190,7 +188,7 @@ touch /usr/local/etc/nginx/conf.d/php-fpm
 echo "${PHPFPM}" >> /usr/local/etc/nginx/conf.d/php-fpm
 
 echo
-echo "Tworzę domyślny host..."
+echo "Adding dewfault host..."
 NGINXDEFAULT=$(cat <<EOF
 server {
     listen       80;
@@ -210,14 +208,14 @@ EOF
 echo "${NGINXDEFAULT}" >> /usr/local/etc/nginx/sites-available/default
 
 echo
-echo "Aktywuję domyślny host..."
+echo "Activating default host..."
 # enable default
 ln -sfv /usr/local/etc/nginx/sites-available/default /usr/local/etc/nginx/sites-enabled/default
 
 sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
 echo
-echo "Instaluję xdebug..."
+echo "Installing xdebug..."
 #install xdebug
 
 cd /tmp
@@ -244,48 +242,48 @@ EOF
 sudo echo "${XDEBUG}" >> /usr/local/etc/php/7.1/php.ini
 
 echo
-echo "Ustawiam strefę czasową dla php..."
+echo "Setting timezone for php..."
 #setup php.ini files
 sudo sed -i -e "s/;date.timezone =/date.timezone = Europe\/Warsaw/" /usr/local/etc/php/7.1/php.ini
 
 
 echo
-echo "Instaluję Composera..."
+echo "Installing Composera..."
 # install Composer
 cd /tmp
 sudo curl -s https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 
 echo
-echo "Instaluję Symfony..."
-#install symfony2
+echo "Installing Symfony..."
+#install symfony
 sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony
 sudo chmod a+x /usr/local/bin/symfony
 
 echo
-echo "Aktualizuję paczki homebrew..."
+echo "Updating homebrew..."
 #update and upgrade all packages
 brew update
 brew upgrade
 
 echo
-echo "Restartuję nginx..."
+echo "Restarting nginx..."
 #restart nginx
 sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 
 echo
-echo "Restart php-fpm..."
+echo "Restarting php-fpm..."
 # restart php-fpm
 launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.php@7.1.plist
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php@7.1.plist
 
 echo
-echo "Zmieniam hasło root dla MySQL na coderslab..."
+echo "Changing root paswor for mySQL database. New password: coderslab..."
 mysqladmin -u root password 'coderslab'
 
 echo
-echo "Tworzę skróty do sterowania nginx, php-fpm oraz mysql..."
+echo "Adding bash aliases for start/stop nginx/php-fpm/mysql..."
 
 # add bash aliases for start/stop nginx/php-fpm/mysql
 
@@ -310,6 +308,5 @@ echo "${BASH_ALIASES}" >> ~/.bash_profile
 #sudo dseditgroup -o edit -a $USER -t user www-data
 
 echo "#############################"
-echo "####INSTALACJA ZAKOŃCZONA####"
+echo "#### Instalation finised ####"
 echo "#############################"
-echo "SPRAWDŹ JEJ POPRAWNOŚĆ WYKONUJĄC KROKI PRZEDSTAWIONE NA PREZENTACJI"

@@ -1,25 +1,23 @@
 #!/usr/bin/env bash
  
 echo
-echo "Witaj w Coders Lab!"
+echo "Hello!"
 echo
-echo "Ten skrypt zaktualizuje Twój system, zainstaluje kilka niezbędnych programów,"
-echo "których będziesz potrzebować podczas kursu oraz skonfiguruje bazę danych MySQL."
-echo "W tym czasie na ekranie pojawi się wiele komunikatów."
-echo "ABY INSTALACJA SIĘ POWIODŁA MUSISZ MIEĆ DOSTĘP DO INTERNETU W TRAKCIE TRWANIA "
-echo "INSTALACJI!"
-read -n1 -r -p "Naciśnij dowolny klawisz, by kontynuować." 
+echo "This script will update your system, and it will install all software needed during course."
+echo "During instalation process you will see lots of information on screen - do not worry about that."
+echo "For instalation process to succeed you have to have internet connection all the time. "
+read -n1 -r -p "Press any key to continue." 
 
 mkdir ~/.coderslab
 
 linuxsysversion=$(lsb_release -rs)
 
-echo "Twoje wersja systemu:"
+echo "Your system version:"
 echo $linuxsysversion
  
 if [[ `lsb_release -rs` != "18.04" ]]
 then
-    echo "Twoje wersja systemu jest niezgodna z wymaganą 18.04"
+    echo "You need to upgrade system version to Ubuntu 18.04"
     exit 1
 fi 
  
@@ -161,6 +159,6 @@ rm ~/.coderslab/PhpStorm.desktop
 #unpausing updating grub
 sudo apt-mark unhold grub*
 
-echo "INSTALACJA ZAKOŃCZONA"
-echo "WYLOGUJ I PONOWNIE ZALOGUJ SIĘ NA SWOJE KONTO"
+echo "Instalation succeded"
+echo "Reboot you romputer now"
 
